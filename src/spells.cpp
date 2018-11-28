@@ -338,6 +338,7 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 	return scriptInterface->callFunction(2);
 }
 
+//CHANGED! ADDED INT AND FAITH
 bool Spell::configureSpell(const pugi::xml_node& node)
 {
 	pugi::xml_attribute nameAttribute = node.attribute("name");
@@ -436,6 +437,18 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 
 	if ((attr = node.attribute("magiclevel")) || (attr = node.attribute("maglv"))) {
 		magLevel = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("intelligence")) || (attr = node.attribute("intlv"))) {
+		intLevel = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("faith")) || (attr = node.attribute("faithlv"))) {
+		faithLevel = pugi::cast<uint32_t>(attr.value());
+	}
+
+	if ((attr = node.attribute("strenght")) || (attr = node.attribute("strenghtlv"))) {
+		strenghtLevel = pugi::cast<uint32_t>(attr.value());
 	}
 
 	if ((attr = node.attribute("mana"))) {
@@ -573,6 +586,30 @@ bool Spell::playerSpellCheck(Player* player) const
 
 	if (player->getMagicLevel() < magLevel) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHMAGICLEVEL);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkillLevel(SKILL_INTELLIGENCE) < intLevel) {
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHINTELLIGENCE);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkillLevel(SKILL_FAITH) < faithLevel) {
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHFAITH);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkillLevel(SKILL_STRENGHT) < strenghtLevel) {
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHSTRENGHT);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
+	if (player->getSkillLevel(SKILL_ENDURANCE) < enduranceLevel) {
+		player->sendCancelMessage(RETURNVALUE_NOTENOUGHENDURANCE);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
@@ -772,7 +809,7 @@ void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool pay
 void Spell::postCastSpell(Player* player, uint32_t manaCost, uint32_t soulCost)
 {
 	if (manaCost > 0) {
-		player->addManaSpent(manaCost);
+		//player->addManaSpent(manaCost);
 		player->changeMana(-static_cast<int32_t>(manaCost));
 	}
 
@@ -1110,6 +1147,8 @@ bool RuneSpell::configureEvent(const pugi::xml_node& node)
 		ItemType& iType = Item::items.getItemType(runeId);
 		iType.runeMagLevel = magLevel;
 		iType.runeLevel = level;
+		iType.runeIntLevel = intLevel;
+		iType.runeFaithLevel = faithLevel;
 		iType.charges = charges;
 	}
 

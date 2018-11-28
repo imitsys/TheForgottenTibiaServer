@@ -60,7 +60,7 @@
 		<item name="piggy bank" chance="90" />
 		<item name="crystal necklace" chance="640" />
 		<item name="talon" chance="750" />
-		<item name="hailstorm rod" chance="1100" />
+		<item id="2183" chance="1100" /><!-- name="hailstorm rod" -->
 		<item id="2192" chance="1250" /><!-- crystal ball -->
 		<item id="2374" chance="1400" /><!-- Wooden Flute -->
 		<item name="clerical mace" chance="1500" />

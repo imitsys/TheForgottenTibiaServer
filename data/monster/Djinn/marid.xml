@@ -74,7 +74,7 @@
 		<item name="gold coin" countmax="70" chance="60000" />
 		<item name="gold coin" countmax="30" chance="60000" />
 		<item name="blue gem" chance="110" />
-		<item name="hailstorm rod" chance="770" />
+		<item id="2183" chance="770" /> <!-- hailstorm rod -->
 		<item id="2374" chance="5000" /><!-- wooden flute -->
 		<item name="heavy machete" chance="4530" />
 		<item name="mystic turban" chance="290" />

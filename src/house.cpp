@@ -106,13 +106,13 @@ void House::updateDoorDescription() const
 {
 	std::ostringstream ss;
 	if (owner != 0) {
-		ss << "It belongs to house '" << houseName << "'. " << ownerName << " owns this house.";
+		ss << "House '" << houseName << "'.\nIt belongs to " << ownerName << ".";
 	} else {
-		ss << "It belongs to house '" << houseName << "'. Nobody owns this house.";
+		ss << "House '" << houseName << "'.\nNobody owns this house.";
 
 		const int32_t housePrice = g_config.getNumber(ConfigManager::HOUSE_PRICE);
 		if (housePrice != -1) {
-			ss << " It costs " << (houseTiles.size() * housePrice) << " gold coins.";
+			ss << "\nIt costs " << (houseTiles.size() * housePrice) << " gold coins.";
 		}
 	}
 

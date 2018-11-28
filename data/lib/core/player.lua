@@ -21,6 +21,26 @@ function Player.feed(self, food)
 	return true
 end
 
+function Player.getTotalBlessings(self)
+	numBlessings = 0
+	if self:hasBlessing(1) then
+		numBlessings = numBlessings + 1
+    	if self:hasBlessing(2) then
+			numBlessings = numBlessings + 1
+    		if self:hasBlessing(3) then
+				numBlessings = numBlessings + 1
+    			if self:hasBlessing(4) then
+					numBlessings = numBlessings + 1
+    				if self:hasBlessing(5) then
+						numBlessings = numBlessings + 1
+    				end
+    			end
+    		end
+    	end
+    end
+    return numBlessings
+end
+
 function Player.getClosestFreePosition(self, position, extended)
 	if self:getGroup():getAccess() and self:getAccountType() >= ACCOUNT_TYPE_GOD then
 		return position
@@ -99,4 +119,43 @@ function Player.addManaSpent(...)
 	local ret = addManaSpentFunc(...)
 	APPLY_SKILL_MULTIPLIER = true
 	return ret
+end
+
+function Player.depositMoney(self, amount)
+	if not self:removeMoney(amount) then
+		return false
+	end
+
+	self:setBankBalance(self:getBankBalance() + amount)
+	return true
+end
+
+function Player.withdrawMoney(self, amount)
+	local balance = self:getBankBalance()
+	if amount > balance or not self:addMoney(amount) then
+		return false
+	end
+
+	self:setBankBalance(balance - amount)
+	return true
+end
+
+function Player.transferMoneyTo(self, target, amount)
+	local balance = self:getBankBalance()
+	if amount > balance then
+		return false
+	end
+
+	local targetPlayer = Player(target)
+	if targetPlayer then
+		targetPlayer:setBankBalance(targetPlayer:getBankBalance() + amount)
+	else
+		if not playerExists(target) then
+			return false
+		end
+		db.query("UPDATE `players` SET `balance` = `balance` + '" .. amount .. "' WHERE `name` = " .. db.escapeString(target))
+	end
+
+	self:setBankBalance(self:getBankBalance() - amount)
+	return true
 end

@@ -145,6 +145,40 @@ bool ConfigManager::load()
 	string[MOTD] = getGlobalString(L, "motd", "");
 	string[WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
 
+	integer[MAGIC_MANAGAIN] = getGlobalNumber(L, "magicManaGain", 15);
+	integer[VITALITY_HEALTHGAIN] = getGlobalNumber(L, "vitalityHealthGain", 15);
+	integer[STRENGHT_HEALTHGAIN] = getGlobalNumber(L, "strenghtHealthGain", 0);
+	integer[STRENGHT_CAPGAIN] = getGlobalNumber(L, "strenghtCapGain", 5);
+	integer[INTELLIGENCE_MANAGAIN] = getGlobalNumber(L, "intelligenceManaGain", 10);
+	integer[FAITH_MANAGAIN] = getGlobalNumber(L, "faithManaGain", 10);
+	integer[RESISTANCE_CAPGAIN] = getGlobalNumber(L, "resistanceCapGain", 0);
+	integer[RESISTANCE_HEALTHGAIN] = getGlobalNumber(L, "resistanceHealthGain", 5);
+	integer[ENDURANCE_CAPGAIN] = getGlobalNumber(L, "enduranceCapGain", 15);
+	integer[ENDURANCE_HEALTHGAIN] = getGlobalNumber(L, "enduranceHealthGain", 5);
+
+	integer[SHIELD_RESISTANCEFACTOR] = getGlobalNumber(L, "shieldResistanceFactor", 100); //default tibia
+	integer[SHIELD_DEXTERITYFACTOR] = getGlobalNumber(L, "shieldDexterityFactor", 0); //default tibia
+
+	//integer[MELEE_DEXTERITYFACTOR] = getGlobalNumber(L, "meleeDexterityFactor", 0); //default tibia
+	//integer[MELEE_STRENGHTFACTOR] = getGlobalNumber(L, "meleeStrenghtFactor", 100); //default tibia
+
+	integer[SPEAR_DEXTERITYFACTOR] = getGlobalNumber(L, "spearDexterityFactor", 100); //default tibia
+	integer[SPEAR_STRENGHTFACTOR] = getGlobalNumber(L, "spearStrenghtFactor", 0); //default tibia
+
+	integer[BOW_DEXTERITYFACTOR] = getGlobalNumber(L, "bowDexterityFactor", 100); //default tibia
+	integer[BOW_STRENGHTFACTOR] = getGlobalNumber(L, "bowStrenghtFactor", 0); //default tibia
+
+	integer[ROD_FAITHFACTOR] = getGlobalNumber(L, "rodFaithFactor", 0); //default tibia
+	integer[WAND_INTELLIGENCEFACTOR] = getGlobalNumber(L, "wandIntelligenceFactor", 0); //default tibia
+	integer[MAGIC_WANDRODFACTOR] = getGlobalNumber(L, "magicWandRodFactor", 0); //default tibia
+
+	boolean[ALLOW_DUAL_WIELDING] = getGlobalBoolean(L, "allowDualWielding", false); //default tibia
+	integer[DUAL_WIELDING_DAMAGE_RATE] = getGlobalNumber(L, "dualWieldingDamageRate", 75);
+
+	//integer[DEXTERITY_INITIALDEXTERITY] = getGlobalNumber(L, "initialDexterity", 8);
+	//integer[DEXTERITY_WALKSPEEDFACTOR] = getGlobalNumber(L, "walkSpeedFactor", 2);
+	//integer[DEXTERITY_ATTACKSPEEDFACTOR] = getGlobalNumber(L, "attackSpeedFactor", 10);
+
 	integer[MAX_PLAYERS] = getGlobalNumber(L, "maxPlayers");
 	integer[PZ_LOCKED] = getGlobalNumber(L, "pzLocked", 60000);
 	integer[DEFAULT_DESPAWNRANGE] = getGlobalNumber(L, "deSpawnRange", 2);

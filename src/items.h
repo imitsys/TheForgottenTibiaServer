@@ -320,6 +320,8 @@ class ItemType
 		int32_t armor = 0;
 		uint16_t rotateTo = 0;
 		int32_t runeMagLevel = 0;
+		int32_t runeIntLevel = 0;
+		int32_t runeFaithLevel = 0;
 		int32_t runeLevel = 0;
 
 		CombatType_t combatType = COMBAT_NONE;

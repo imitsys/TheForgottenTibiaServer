@@ -836,7 +836,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				if (item) {
 					tmpSubType = item->getSubType();
 				}
-				s << ". " << (it.stackable && tmpSubType > 1 ? "They" : "It") << " can only be used by ";
+				s << ".\n" << (it.stackable && tmpSubType > 1 ? "They" : "It") << " can only be used by ";
 
 				const VocSpellMap& vocMap = rune->getVocMap();
 				std::vector<Vocation*> showVocMap;
@@ -868,18 +868,22 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				s << " with";
 
 				if (it.runeLevel > 0) {
-					s << " level " << it.runeLevel;
+					s << " level" << it.runeLevel;
 				}
 
 				if (it.runeMagLevel > 0) {
-					if (it.runeLevel > 0) {
-						s << " and";
-					}
-
 					s << " magic level " << it.runeMagLevel;
 				}
 
-				s << " or higher";
+				if (it.runeIntLevel > 0) {
+					s << ", intelligence " << it.runeIntLevel;
+				}
+
+				if (it.runeFaithLevel > 0) {
+					s << " and faith " << it.runeFaithLevel;
+				}
+
+				//s << " or higher";
 			}
 		}
 	} else if (it.weaponType != WEAPON_NONE) {

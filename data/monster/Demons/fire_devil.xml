@@ -49,7 +49,7 @@
 		<item id="2050" chance="10000" /><!-- torch -->
 		<item id="2050" countmax="2" chance="1420" /><!-- torch -->
 		<item name="small amethyst" chance="300" />
-		<item name="necrotic rod" chance="460" />
+		<item id="2185" chance="460" /><!-- name="necrotic rod" -->
 		<item name="blank rune" chance="10950" />
 		<item name="double axe" chance="1500" />
 		<item id="2419" chance="3000" /><!-- scimitar -->

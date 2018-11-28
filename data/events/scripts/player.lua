@@ -45,13 +45,16 @@ function Player:onLook(thing, position, distance)
 			"%s\nPosition: %d, %d, %d",
 			description, position.x, position.y, position.z
 		)
+	end
 
-		if thing:isCreature() then
-			if thing:isPlayer() then
-				description = string.format("%s\nIP: %s.", description, Game.convertIpToString(thing:getIp()))
-			end
+	if thing:isCreature() then
+		if thing:isPlayer() then
+			local kills = math.max(0, thing:getStorageValue(STORAGEVALUE_KILLS)) + math.max(0, thing:getStorageValue(STORAGEVALUE_ASSISTS))
+			local deaths = math.max(0, thing:getStorageValue(STORAGEVALUE_DEATHS))
+			description = string.format("%s\nKills: %d Deaths: %d", description, kills, deaths)
 		end
 	end
+
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
 end
 
@@ -69,10 +72,11 @@ function Player:onLookInBattleList(creature, distance)
 			"%s\nPosition: %d, %d, %d",
 			description, position.x, position.y, position.z
 		)
-
-		if creature:isPlayer() then
-			description = string.format("%s\nIP: %s", description, Game.convertIpToString(creature:getIp()))
-		end
+	end
+	if creature:isPlayer() then
+		local kills = math.max(0, creature:getStorageValue(STORAGEVALUE_KILLS)) + math.max(0, creature:getStorageValue(STORAGEVALUE_ASSISTS))
+		local deaths = math.max(0, creature:getStorageValue(STORAGEVALUE_DEATHS))
+		description = string.format("%s\nKills: %d Deaths: %d", description, kills, deaths)
 	end
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
 end
@@ -86,6 +90,7 @@ function Player:onLookInShop(itemType, count)
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+
 	if toPosition.x ~= CONTAINER_POSITION then
 		return true
 	end
@@ -103,12 +108,16 @@ function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, 
 
 		if moveItem then
 			local parent = item:getParent()
-			if parent:getSize() == parent:getCapacity() then
-				self:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM))
-				return false
+			if parent:isItem() then
+				if parent:getSize() == parent:getCapacity() then
+					self:sendTextMessage(MESSAGE_STATUS_SMALL, Game.getReturnMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM))
+					return false
+				else
+					return moveItem:moveTo(parent)
+				end
 			else
 				return moveItem:moveTo(parent)
-			end
+			end	
 		end
 	end
 

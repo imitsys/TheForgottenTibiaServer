@@ -73,7 +73,7 @@
 		<item name="gold coin" countmax="50" chance="60000" />
 		<item name="small emerald" chance="7000" />
 		<item name="green gem" chance="200" />
-		<item name="wand of inferno" chance="390" />
+		<item id="2187" chance="390" /> <!-- name="wand of inferno" -->
 		<item name="heavy machete" chance="5000" />
 		<item name="mystic turban" chance="160" />
 		<item name="pear" countmax="5" chance="9390" />

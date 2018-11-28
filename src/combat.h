@@ -193,7 +193,7 @@ class AreaCombat
 		};
 
 		MatrixArea* createArea(const std::list<uint32_t>& list, uint32_t rows);
-		static void copyArea(const MatrixArea* input, MatrixArea* output, MatrixOperation_t op);
+		void copyArea(const MatrixArea* input, MatrixArea* output, MatrixOperation_t op) const;
 
 		MatrixArea* getArea(const Position& centerPos, const Position& targetPos) const {
 			int32_t dx = Position::getOffsetX(targetPos, centerPos);

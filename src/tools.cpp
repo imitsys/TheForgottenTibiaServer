@@ -781,25 +781,25 @@ std::string getSpecialSkillName(uint8_t skillid)
 std::string getSkillName(uint8_t skillid)
 {
 	switch (skillid) {
-		case SKILL_FIST:
+		case SKILL_VITALITY:
 			return "fist fighting";
 
-		case SKILL_CLUB:
+		case SKILL_STRENGHT:
 			return "club fighting";
 
-		case SKILL_SWORD:
+		case SKILL_FAITH:
 			return "sword fighting";
 
-		case SKILL_AXE:
+		case SKILL_INTELLIGENCE:
 			return "axe fighting";
 
-		case SKILL_DISTANCE:
+		case SKILL_DEXTERITY:
 			return "distance fighting";
 
-		case SKILL_SHIELD:
+		case SKILL_RESISTANCE:
 			return "shielding";
 
-		case SKILL_FISHING:
+		case SKILL_ENDURANCE:
 			return "fishing";
 
 		case SKILL_MAGLEVEL:
@@ -1036,9 +1036,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_PUTTHISOBJECTINBOTHHANDS:
 			return "Put this object in both hands.";
 
-		case RETURNVALUE_CANONLYUSEONEWEAPON:
+	/*	case RETURNVALUE_CANONLYUSEONEWEAPON:
 			return "You may only use one weapon.";
-
+	*/
 		case RETURNVALUE_TOOFARAWAY:
 			return "Too far away.";
 
@@ -1108,6 +1108,18 @@ const char* getReturnMessage(ReturnValue value)
 
 		case RETURNVALUE_NOTENOUGHMAGICLEVEL:
 			return "You do not have enough magic level.";
+
+		case RETURNVALUE_NOTENOUGHINTELLIGENCE:
+			return "You do not have enough intelligence.";
+
+		case RETURNVALUE_NOTENOUGHFAITH:
+			return "You do not have enough faith.";
+
+		case RETURNVALUE_NOTENOUGHSTRENGHT:
+			return "You do not have enough strenght.";
+
+		case RETURNVALUE_NOTENOUGHENDURANCE:
+			return "You do not have enough endurance.";
 
 		case RETURNVALUE_NOTENOUGHMANA:
 			return "You do not have enough mana.";

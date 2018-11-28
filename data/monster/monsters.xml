@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monsters>
+	<monster name="Tester" file="tester.xml" />
+
 	<!-- Amazons -->
 	<monster name="Amazon" file="Amazons/amazon.xml" />
 	<monster name="Valkyrie" file="Amazons/valkyrie.xml" />
@@ -341,6 +343,7 @@
 	<monster name="Shaburak Lord" file="Demons/shaburak_lord.xml" />
 	<monster name="Shaburak Prince" file="Demons/shaburak_prince.xml" />
 	<monster name="Yielothax" file="Demons/yielothax.xml" />
+	<monster name="Rift Lord" file="Demons/rift_lord.xml" />
 
 	<!-- Djinn -->
 	<monster name="Blue Djinn" file="Djinn/blue_djinn.xml" />
@@ -487,6 +490,7 @@
 	<!-- Ghosts -->
 	<monster name="Ghost" file="Ghosts/ghost.xml" />
 	<monster name="Phantasm Summon" file="Ghosts/phantasm_summon.xml" />
+	<monster name="Rift Phantom" file="ghosts/rift_phantom.xml" />
 	<monster name="Souleater" file="Ghosts/souleater.xml" />
 	<monster name="Phantasm" file="Ghosts/phantasm.xml" />
 	<monster name="Spectre" file="Ghosts/spectre.xml" />

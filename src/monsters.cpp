@@ -46,6 +46,7 @@ uint32_t Monsters::getLootRandom()
 	return uniform_random(0, MAX_LOOTCHANCE) / g_config.getNumber(ConfigManager::RATE_LOOT);
 }
 
+//CHANGED! AUTO LOOT
 void MonsterType::createLoot(Container* corpse)
 {
 	if (g_config.getNumber(ConfigManager::RATE_LOOT) == 0) {
@@ -54,7 +55,15 @@ void MonsterType::createLoot(Container* corpse)
 	}
 
 	Player* owner = g_game.getPlayerByID(corpse->getCorpseOwner());
+
+	std::ostringstream ss;
+	ss << "Loot of " << nameDescription << ": ";
+
 	if (!owner || owner->getStaminaMinutes() > 840) {
+
+		int goldCoins = 0;
+		int platinumCoins = 0;
+
 		for (auto it = info.lootItems.rbegin(), end = info.lootItems.rend(); it != end; ++it) {
 			auto itemList = createLootItem(*it);
 			if (itemList.empty()) {
@@ -62,6 +71,52 @@ void MonsterType::createLoot(Container* corpse)
 			}
 
 			for (Item* item : itemList) {
+
+				//auto loot gold coin and platinum coin
+				if (owner->autoLootGold == true) {
+					if (item->getID() == 2148 || item->getID() == 2152) {
+						if (item->getID() == 2148) {
+							goldCoins = item->getItemCount();
+						}
+						if (item->getID() == 2152) {
+							platinumCoins = item->getItemCount();
+						}
+						g_game.internalPlayerAddItem(owner, item, true, CONST_SLOT_WHEREEVER);
+					}
+				}
+
+				//auto loot addon itens
+				if (owner->autoLootAddon == true) {
+					if (item->getID() == 5875 || item->getID() == 5876 || item->getID() == 5877 ||
+						item->getID() == 5878 || item->getID() == 5879 || item->getID() == 5880 ||
+						item->getID() == 5881 || item->getID() == 5882 || item->getID() == 5883 ||
+						item->getID() == 5884 || item->getID() == 5885 || item->getID() == 5886 ||
+						item->getID() == 5887 || item->getID() == 5888 || item->getID() == 5889 ||
+						item->getID() == 5890 || item->getID() == 5891 || item->getID() == 5892 ||
+						item->getID() == 5893 || item->getID() == 5894 || item->getID() == 5895 ||
+						item->getID() == 5896 || item->getID() == 5897 || item->getID() == 5898 ||
+						item->getID() == 5899 || item->getID() == 5900 || item->getID() == 5901 ||
+						item->getID() == 5902 || item->getID() == 5903 || item->getID() == 5904 ||
+						item->getID() == 5905 || item->getID() == 5906 || item->getID() == 5919 ||
+						item->getID() == 5902 || item->getID() == 5903 || item->getID() == 5904 ||
+						item->getID() == 5919 || item->getID() == 5920 || item->getID() == 5921 ||
+						item->getID() == 5922 || item->getID() == 5925 || item->getID() == 5930 ||
+						item->getID() == 6097 || item->getID() == 6098 || item->getID() == 6099 ||
+						item->getID() == 6100 || item->getID() == 6101 || item->getID() == 6102 ||
+						item->getID() == 3960 || item->getID() == 2335 || item->getID() == 2336 ||
+						item->getID() == 2337 || item->getID() == 2338 || item->getID() == 2339 ||
+						item->getID() == 2340 || item->getID() == 2341 || item->getID() == 4848 ||
+						item->getID() == 5909 || item->getID() == 5910 || item->getID() == 5911 ||
+						item->getID() == 5912 || item->getID() == 5913 || item->getID() == 5914 ||
+						item->getID() == 5943 || item->getID() == 5944 || item->getID() == 5945 ||
+						item->getID() == 5947 || item->getID() == 5948 || item->getID() == 5953 ||
+						item->getID() == 5954 || item->getID() == 5957 || item->getID() == 6103 ||
+						item->getID() == 6126 || item->getID() == 6500 || item->getID() == 4843 ||
+						item->getID() == 6546 || item->getID() == 5809 || item->getID() == 5810) {
+						g_game.internalPlayerAddItem(owner, item, true, CONST_SLOT_WHEREEVER);
+					}
+				}
+
 				//check containers
 				if (Container* container = item->getContainer()) {
 					if (!createLootContainer(container, *it)) {
@@ -70,15 +125,117 @@ void MonsterType::createLoot(Container* corpse)
 					}
 				}
 
-				if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
-					corpse->internalAddThing(item);
+				//auto looting just gold
+				if (owner->autoLootGold == true && owner->autoLootAddon == false) {
+					if (item->getID() != 2148 && item->getID() != 2152) {
+						if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
+							corpse->internalAddThing(item);
+						}
+					}
+				}
+
+				//auto looting just addons
+				else if (owner->autoLootAddon == true && owner->autoLootGold == false) {
+					if (item->getID() != 5875 && item->getID() != 5876 && item->getID() != 5877 &&
+						item->getID() != 5878 && item->getID() != 5879 && item->getID() != 5880 &&
+						item->getID() != 5881 && item->getID() != 5882 && item->getID() != 5883 &&
+						item->getID() != 5884 && item->getID() != 5885 && item->getID() != 5886 &&
+						item->getID() != 5887 && item->getID() != 5888 && item->getID() != 5889 &&
+						item->getID() != 5890 && item->getID() != 5891 && item->getID() != 5892 &&
+						item->getID() != 5893 && item->getID() != 5894 && item->getID() != 5895 &&
+						item->getID() != 5896 && item->getID() != 5897 && item->getID() != 5898 &&
+						item->getID() != 5899 && item->getID() != 5900 && item->getID() != 5901 &&
+						item->getID() != 5902 && item->getID() != 5903 && item->getID() != 5904 &&
+						item->getID() != 5905 && item->getID() != 5906 && item->getID() != 5919 &&
+						item->getID() != 5902 && item->getID() != 5903 && item->getID() != 5904 &&
+						item->getID() != 5919 && item->getID() != 5920 && item->getID() != 5921 &&
+						item->getID() != 5922 && item->getID() != 5925 && item->getID() != 5930 &&
+						item->getID() != 6097 && item->getID() != 6098 && item->getID() != 6099 &&
+						item->getID() != 6100 && item->getID() != 6101 && item->getID() != 6102 &&
+						item->getID() != 3960 && item->getID() != 2335 && item->getID() != 2336 &&
+						item->getID() != 2337 && item->getID() != 2338 && item->getID() != 2339 &&
+						item->getID() != 2340 && item->getID() != 2341 && item->getID() != 4848 &&
+						item->getID() != 5909 && item->getID() != 5910 && item->getID() != 5911 &&
+						item->getID() != 5912 && item->getID() != 5913 && item->getID() != 5914 &&
+						item->getID() != 5943 && item->getID() != 5944 && item->getID() != 5945 &&
+						item->getID() != 5947 && item->getID() != 5948 && item->getID() != 5953 &&
+						item->getID() != 5954 && item->getID() != 5957 && item->getID() != 6103 &&
+						item->getID() != 6126 && item->getID() != 6500 && item->getID() != 4843 &&
+						item->getID() != 6546 && item->getID() != 5809 && item->getID() != 5810) {
+						if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
+							corpse->internalAddThing(item);
+						}
+					}
+				}
+
+				//auto looting addons and gold
+				else if (owner->autoLootAddon == true && owner->autoLootGold == true) {
+					if (item->getID() != 5875 && item->getID() != 5876 && item->getID() != 5877 &&
+						item->getID() != 5878 && item->getID() != 5879 && item->getID() != 5880 &&
+						item->getID() != 5881 && item->getID() != 5882 && item->getID() != 5883 &&
+						item->getID() != 5884 && item->getID() != 5885 && item->getID() != 5886 &&
+						item->getID() != 5887 && item->getID() != 5888 && item->getID() != 5889 &&
+						item->getID() != 5890 && item->getID() != 5891 && item->getID() != 5892 &&
+						item->getID() != 5893 && item->getID() != 5894 && item->getID() != 5895 &&
+						item->getID() != 5896 && item->getID() != 5897 && item->getID() != 5898 &&
+						item->getID() != 5899 && item->getID() != 5900 && item->getID() != 5901 &&
+						item->getID() != 5902 && item->getID() != 5903 && item->getID() != 5904 &&
+						item->getID() != 5905 && item->getID() != 5906 && item->getID() != 5919 &&
+						item->getID() != 5902 && item->getID() != 5903 && item->getID() != 5904 &&
+						item->getID() != 5919 && item->getID() != 5920 && item->getID() != 5921 &&
+						item->getID() != 5922 && item->getID() != 5925 && item->getID() != 5930 &&
+						item->getID() != 6097 && item->getID() != 6098 && item->getID() != 6099 &&
+						item->getID() != 6100 && item->getID() != 6101 && item->getID() != 6102 &&
+						item->getID() != 3960 && item->getID() != 2335 && item->getID() != 2336 &&
+						item->getID() != 2337 && item->getID() != 2338 && item->getID() != 2339 &&
+						item->getID() != 2340 && item->getID() != 2341 && item->getID() != 4848 &&
+						item->getID() != 5909 && item->getID() != 5910 && item->getID() != 5911 &&
+						item->getID() != 5912 && item->getID() != 5913 && item->getID() != 5914 &&
+						item->getID() != 5943 && item->getID() != 5944 && item->getID() != 5945 &&
+						item->getID() != 5947 && item->getID() != 5948 && item->getID() != 5953 &&
+						item->getID() != 5954 && item->getID() != 5957 && item->getID() != 6103 &&
+						item->getID() != 6126 && item->getID() != 6500 && item->getID() != 4843 &&
+						item->getID() != 6546 && item->getID() != 5809 && item->getID() != 5810 &&
+						item->getID() != 2148 && item->getID() != 2152) {
+						if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
+							corpse->internalAddThing(item);
+						}
+					}
+				}
+
+				//auto looting nothing
+				else {
+					if (g_game.internalAddItem(corpse, item) != RETURNVALUE_NOERROR) {
+						corpse->internalAddThing(item);
+					}
 				}
 			}
 		}
 
 		if (owner) {
-			std::ostringstream ss;
-			ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription();
+
+			if (owner->autoLootGold == true) {
+
+				if (goldCoins > 0) {
+					if (goldCoins == 1) {
+						ss << goldCoins << " gold coin, ";
+					}
+					else if (goldCoins > 1) {
+						ss << goldCoins << " gold coins, ";
+					}
+				}
+
+				if (platinumCoins > 0) {
+					if (platinumCoins == 1) {
+						ss << platinumCoins << " platinum coin, ";
+					}
+					else if (platinumCoins > 1) {
+						ss << platinumCoins << " platinum coins, ";
+					}
+				}
+			}
+
+			ss << corpse->getContentDescription();
 
 			if (owner->getParty()) {
 				owner->getParty()->broadcastPartyLoot(ss.str());
@@ -87,8 +244,7 @@ void MonsterType::createLoot(Container* corpse)
 			}
 		}
 	} else {
-		std::ostringstream ss;
-		ss << "Loot of " << nameDescription << ": nothing (due to low stamina)";
+		ss << "nothing (due to low stamina)";
 
 		if (owner->getParty()) {
 			owner->getParty()->broadcastPartyLoot(ss.str());

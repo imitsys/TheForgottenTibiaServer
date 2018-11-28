@@ -51,7 +51,7 @@
 	<loot>
 		<item id="1958" chance="520" /><!-- book -->
 		<item name="gold coin" countmax="5" chance="90000" />
-		<item name="wand of decay" chance="1000" />
+		<item id="2188" chance="1000" /> <!-- name="wand of decay" -->
 		<item name="spear" chance="4850" />
 		<item name="chain armor" chance="8750" />
 		<item name="corncob" countmax="2" chance="10600" />

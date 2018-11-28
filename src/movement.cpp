@@ -310,6 +310,7 @@ uint32_t MoveEvents::onPlayerEquip(Player* player, Item* item, slots_t slot, boo
 	if (!moveEvent) {
 		return 1;
 	}
+
 	return moveEvent->fireEquip(player, item, slot, isCheck);
 }
 
@@ -564,6 +565,7 @@ uint32_t EquipItem(MoveEvent* moveEvent, Player* player, Item* item, slots_t slo
 	}
 
 	const ItemType& it = Item::items[item->getID()];
+
 	if (it.transformEquipTo != 0) {
 		Item* newItem = g_game.transformItem(item, it.transformEquipTo);
 		g_game.startDecay(newItem);

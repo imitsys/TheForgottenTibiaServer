@@ -74,6 +74,12 @@ enum tradestate_t : uint8_t {
 	TRADE_TRANSFER,
 };
 
+enum attackHand_t : uint8_t {
+	HAND_LEFT,
+	HAND_RIGHT,
+	
+};
+
 struct VIPEntry {
 	VIPEntry(uint32_t guid, std::string name, std::string description, uint32_t icon, bool notify) :
 		guid(guid), name(std::move(name)), description(std::move(description)), icon(icon), notify(notify) {}
@@ -99,7 +105,7 @@ struct OutfitEntry {
 
 struct Skill {
 	uint64_t tries = 0;
-	uint16_t level = 10;
+	uint16_t level = 8;
 	uint8_t percent = 0;
 };
 
@@ -384,6 +390,9 @@ class Player final : public Creature, public Cylinder
 		uint32_t getLevel() const {
 			return level;
 		}
+		uint32_t getPoints() const {
+			return points;
+		}
 		uint8_t getLevelPercent() const {
 			return levelPercent;
 		}
@@ -452,8 +461,8 @@ class Player final : public Creature, public Cylinder
 
 		bool removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType, bool ignoreEquipped = false) const;
 
-		uint32_t getCapacity() const {
-			if (hasFlag(PlayerFlag_CannotPickupItem)) {
+		uint32_t getCapacity() const{
+		if (hasFlag(PlayerFlag_CannotPickupItem)) {
 				return 0;
 			} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 				return std::numeric_limits<uint32_t>::max();
@@ -625,6 +634,36 @@ class Player final : public Creature, public Cylinder
 		BlockType_t getLastAttackBlockType() const {
 			return lastAttackBlockType;
 		}
+
+		//NEW! DUAL WIELD SYSTEM
+		void switchAttackHand() {
+			lastAttackHand = lastAttackHand == HAND_LEFT ? HAND_RIGHT : HAND_LEFT;
+			
+		}
+
+		//NEW! DUAL WIELD SYSTEM
+		slots_t getAttackHand() const {
+			return lastAttackHand == HAND_LEFT ? CONST_SLOT_LEFT : CONST_SLOT_RIGHT;
+			
+		}
+
+		//NEW! DUAL WIELD SYSTEM
+		void switchBlockSkillAdvance() {
+			blockSkillAdvance = !blockSkillAdvance;
+			
+		}
+		
+		//NEW! DUAL WIELD SYSTEM
+		bool getBlockSkillAdvance() {
+			return blockSkillAdvance;
+			
+		}
+
+		//NEW! DUAL WIELD SYSTEM
+		bool isDualWielding() const;
+
+		//NEW! CONFIG LUA (not implemented)
+		//uint32_t getAttackSpeed(Player * player) const;
 
 		Item* getWeapon(slots_t slot, bool ignoreAmmo) const;
 		Item* getWeapon(bool ignoreAmmo = false) const;
@@ -1141,8 +1180,13 @@ class Player final : public Creature, public Cylinder
 		void learnInstantSpell(const std::string& spellName);
 		void forgetInstantSpell(const std::string& spellName);
 		bool hasLearnedInstantSpell(const std::string& spellName) const;
+		bool autoLootGold = false; //NEW! AUTO LOOT GOLD
+		bool autoLootAddon = false; //NEW! AUTO LOOT ADDON
+		uint32_t title = 0; //NEW! TITLE
 
 	private:
+		bool setTitleDescription(PlayerTitle_t titleiD); //NEW! TITLE
+
 		std::forward_list<Condition*> getMuteConditions() const;
 
 		void checkTradeState(const Item* item);
@@ -1254,6 +1298,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t conditionImmunities = 0;
 		uint32_t conditionSuppressions = 0;
 		uint32_t level = 1;
+		uint32_t points = 0;
 		uint32_t magLevel = 0;
 		uint32_t actionTaskEvent = 0;
 		uint32_t nextStepEvent = 0;
@@ -1296,6 +1341,12 @@ class Player final : public Creature, public Cylinder
 		fightMode_t fightMode = FIGHTMODE_ATTACK;
 		AccountType_t accountType = ACCOUNT_TYPE_NORMAL;
 
+		//NEW! DUAL WIELD SYSTEM
+		attackHand_t lastAttackHand;
+
+		//NEW! DUAL WIELD SYSTEM
+		bool blockSkillAdvance;
+
 		bool chaseMode = false;
 		bool secureMode = false;
 		bool inMarket = false;
@@ -1312,18 +1363,29 @@ class Player final : public Creature, public Cylinder
 		int32_t getStepSpeed() const override {
 			return std::max<int32_t>(PLAYER_MIN_SPEED, std::min<int32_t>(PLAYER_MAX_SPEED, getSpeed()));
 		}
+
+		//CHANGED! SKILL POINTS SYSTEM - DEXTERITY WALK SPEED
 		void updateBaseSpeed() {
 			if (!hasFlag(PlayerFlag_SetMaxSpeed)) {
-				baseSpeed = vocation->getBaseSpeed() + (2 * (level - 1));
-			} else {
+				//increase walk speed in 1 = increase baseSpeed in 2
+				baseSpeed = vocation->getBaseSpeed() + (2 * (level - 1)) + ((skills[SKILL_DEXTERITY].level - 8) / 2);
+			}
+			else {
 				baseSpeed = PLAYER_MAX_SPEED;
 			}
 		}
 
+
 		bool isPromoted() const;
 
+		//CHANGED! SKILL POINTS SYSTEM - DEXTERITY AND DUAL WIELD ATTACK SPEED
 		uint32_t getAttackSpeed() const {
-			return vocation->getAttackSpeed();
+			if (isDualWielding()) {
+				return 1000;
+			}
+			else {
+				return 2000 - ((skills[SKILL_DEXTERITY].level - 8) * 5);
+			}
 		}
 
 		static uint8_t getPercentLevel(uint64_t count, uint64_t nextLevelCount);

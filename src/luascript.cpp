@@ -1156,13 +1156,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_TICKINTERVAL)
 	registerEnum(CONDITION_PARAM_FORCEUPDATE)
 	registerEnum(CONDITION_PARAM_SKILL_MELEE)
-	registerEnum(CONDITION_PARAM_SKILL_FIST)
-	registerEnum(CONDITION_PARAM_SKILL_CLUB)
-	registerEnum(CONDITION_PARAM_SKILL_SWORD)
-	registerEnum(CONDITION_PARAM_SKILL_AXE)
-	registerEnum(CONDITION_PARAM_SKILL_DISTANCE)
-	registerEnum(CONDITION_PARAM_SKILL_SHIELD)
-	registerEnum(CONDITION_PARAM_SKILL_FISHING)
+	registerEnum(CONDITION_PARAM_SKILL_VITALITY)
+	registerEnum(CONDITION_PARAM_SKILL_STRENGHT)
+	registerEnum(CONDITION_PARAM_SKILL_FAITH)
+	registerEnum(CONDITION_PARAM_SKILL_INTELLIGENCE)
+	registerEnum(CONDITION_PARAM_SKILL_DEXTERITY)
+	registerEnum(CONDITION_PARAM_SKILL_RESISTANCE)
+	registerEnum(CONDITION_PARAM_SKILL_ENDURANCE)
 	registerEnum(CONDITION_PARAM_STAT_MAXHITPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAXMANAPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTS)
@@ -1171,13 +1171,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTSPERCENT)
 	registerEnum(CONDITION_PARAM_PERIODICDAMAGE)
 	registerEnum(CONDITION_PARAM_SKILL_MELEEPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_FISTPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_CLUBPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_SWORDPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_AXEPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_DISTANCEPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_SHIELDPERCENT)
-	registerEnum(CONDITION_PARAM_SKILL_FISHINGPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_VITALITYPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_STRENGHTPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_FAITHPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_INTELLIGENCEPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_DEXTERITYPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_RESISTANCEPERCENT)
+	registerEnum(CONDITION_PARAM_SKILL_ENDURANCEPERCENT)
 	registerEnum(CONDITION_PARAM_BUFF_SPELL)
 	registerEnum(CONDITION_PARAM_SUBID)
 	registerEnum(CONDITION_PARAM_FIELD)
@@ -1546,13 +1546,13 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnum(VOCATION_NONE)
 
-	registerEnum(SKILL_FIST)
-	registerEnum(SKILL_CLUB)
-	registerEnum(SKILL_SWORD)
-	registerEnum(SKILL_AXE)
-	registerEnum(SKILL_DISTANCE)
-	registerEnum(SKILL_SHIELD)
-	registerEnum(SKILL_FISHING)
+	registerEnum(SKILL_VITALITY)
+	registerEnum(SKILL_STRENGHT)
+	registerEnum(SKILL_FAITH)
+	registerEnum(SKILL_INTELLIGENCE)
+	registerEnum(SKILL_DEXTERITY)
+	registerEnum(SKILL_RESISTANCE)
+	registerEnum(SKILL_ENDURANCE)
 	registerEnum(SKILL_MAGLEVEL)
 	registerEnum(SKILL_LEVEL)
 
@@ -1842,6 +1842,45 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MYSQL_SOCK)
 	registerEnumIn("configKeys", ConfigManager::DEFAULT_PRIORITY)
 	registerEnumIn("configKeys", ConfigManager::MAP_AUTHOR)
+
+	//THE FORGOTTEN TIBIA! \/
+
+	registerEnumIn("configKeys", ConfigManager::MAGIC_MANAGAIN)
+	registerEnumIn("configKeys", ConfigManager::VITALITY_HEALTHGAIN)
+	registerEnumIn("configKeys", ConfigManager::STRENGHT_HEALTHGAIN)
+	registerEnumIn("configKeys", ConfigManager::STRENGHT_CAPGAIN)
+	registerEnumIn("configKeys", ConfigManager::INTELLIGENCE_MANAGAIN)
+	registerEnumIn("configKeys", ConfigManager::FAITH_MANAGAIN)
+	registerEnumIn("configKeys", ConfigManager::RESISTANCE_CAPGAIN)
+	registerEnumIn("configKeys", ConfigManager::RESISTANCE_HEALTHGAIN)
+	registerEnumIn("configKeys", ConfigManager::ENDURANCE_CAPGAIN)
+	registerEnumIn("configKeys", ConfigManager::ENDURANCE_HEALTHGAIN)
+
+	registerEnumIn("configKeys", ConfigManager::ALLOW_DUAL_WIELDING)
+	registerEnumIn("configKeys", ConfigManager::DUAL_WIELDING_SPEED_RATE)
+	registerEnumIn("configKeys", ConfigManager::DUAL_WIELDING_DAMAGE_RATE)
+
+	registerEnumIn("configKeys", ConfigManager::SHIELD_RESISTANCEFACTOR)
+	registerEnumIn("configKeys", ConfigManager::SHIELD_DEXTERITYFACTOR)
+
+	//registerEnumIn("configKeys", ConfigManager::MELEE_DEXTERITYFACTOR)
+	//registerEnumIn("configKeys", ConfigManager::MELEE_STRENGHTFACTOR)
+
+	registerEnumIn("configKeys", ConfigManager::SPEAR_DEXTERITYFACTOR)
+	registerEnumIn("configKeys", ConfigManager::SPEAR_STRENGHTFACTOR)
+
+	registerEnumIn("configKeys", ConfigManager::BOW_DEXTERITYFACTOR)
+	registerEnumIn("configKeys", ConfigManager::BOW_STRENGHTFACTOR)
+
+	registerEnumIn("configKeys", ConfigManager::ROD_FAITHFACTOR)
+	registerEnumIn("configKeys", ConfigManager::WAND_INTELLIGENCEFACTOR)
+	registerEnumIn("configKeys", ConfigManager::MAGIC_WANDRODFACTOR)
+
+	//registerEnumIn("configKeys", ConfigManager::DEXTERITY_INITIALDEXTERITY)
+	//registerEnumIn("configKeys", ConfigManager::DEXTERITY_WALKSPEEDFACTOR)
+	//registerEnumIn("configKeys", ConfigManager::DEXTERITY_ATTACKSPEEDFACTOR)
+
+	//THE FORGOTTEN TIBIA /END
 
 	registerEnumIn("configKeys", ConfigManager::SQL_PORT)
 	registerEnumIn("configKeys", ConfigManager::MAX_PLAYERS)
@@ -2252,6 +2291,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getVocation", LuaScriptInterface::luaPlayerGetVocation);
 	registerMethod("Player", "setVocation", LuaScriptInterface::luaPlayerSetVocation);
 
+	//registerMethod("Player", "setDescriptionTitle", LuaScriptInterface::luaPlayersetDescriptionTitle);
+
 	registerMethod("Player", "getSex", LuaScriptInterface::luaPlayerGetSex);
 	registerMethod("Player", "setSex", LuaScriptInterface::luaPlayerSetSex);
 
@@ -2353,6 +2394,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasChaseMode", LuaScriptInterface::luaPlayerHasChaseMode);
 	registerMethod("Player", "hasSecureMode", LuaScriptInterface::luaPlayerHasSecureMode);
 	registerMethod("Player", "getFightMode", LuaScriptInterface::luaPlayerGetFightMode);
+	registerMethod("Player", "toggleAutoLootGold", LuaScriptInterface::luaPlayertoggleAutoLootGold);
+	registerMethod("Player", "toggleAutoLootAddon", LuaScriptInterface::luaPlayertoggleAutoLootAddon);
+	registerMethod("Player", "setTitleDescription", LuaScriptInterface::luaPlayersetTitleDescription);
 
 	// Monster
 	registerClass("Monster", "Creature", LuaScriptInterface::luaMonsterCreate);
@@ -9610,6 +9654,54 @@ int LuaScriptInterface::luaPlayerGetFightMode(lua_State* L)
 	if (player) {
 		lua_pushnumber(L, player->fightMode);
 	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+//NEW! AUTO LOOT GOLD
+int LuaScriptInterface::luaPlayertoggleAutoLootGold(lua_State* L)
+{
+	// player:toggleAutoLootGold()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->autoLootGold = !player->autoLootGold;
+		player->sendStats();
+		lua_pushboolean(L, player->autoLootGold);
+	}
+	else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+//NEW! AUTO LOOT ADDON
+int LuaScriptInterface::luaPlayertoggleAutoLootAddon(lua_State* L)
+{
+	// player:toggleAutoLootAddon()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->autoLootAddon = !player->autoLootAddon;
+		player->sendStats();
+		lua_pushboolean(L, player->autoLootAddon);
+	}
+	else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+//NEW! TITLE
+int LuaScriptInterface::luaPlayersetTitleDescription(lua_State* L)
+{
+	// player:setTitleDescription(newTitle)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		PlayerTitle_t newTitle = getNumber<PlayerTitle_t>(L, 2);
+		player->setTitleDescription(newTitle);
+		pushBoolean(L, true);
+	}
+	else {
 		lua_pushnil(L);
 	}
 	return 1;

@@ -5,10 +5,8 @@ combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_WEAPONTYPE)
 
 local function getHighestSkillLevel(creature)
 	local skillLevel = -1
-	for skillType = SKILL_CLUB, SKILL_AXE do
-		if skillLevel < creature:getEffectiveSkillLevel(skillType) then
-			skillLevel = creature:getEffectiveSkillLevel(skillType)
-		end
+	if skillLevel < creature:getEffectiveSkillLevel(SKILL_CLUB) then
+		skillLevel = creature:getEffectiveSkillLevel(SKILL_CLUB)
 	end
 	return skillLevel
 end

@@ -1,3 +1,38 @@
+function Player.removeMoneyNpc(self, amount)
+    local moneyCount = self:getMoney()
+    local bankCount = self:getBankBalance()
+    if amount > moneyCount + bankCount then
+        return false
+    end
+ 
+    self:removeMoney(math.min(amount, moneyCount))
+    if amount > moneyCount then
+        self:setBankBalance(bankCount - math.max(amount - moneyCount, 0))
+        if moneyCount == 0 then
+            self:sendTextMessage(MESSAGE_INFO_DESCR, ("Paid %d gold from bank account. Your account balance is now %d gold."):format(amount, self:getBankBalance()))
+        else
+            self:sendTextMessage(MESSAGE_INFO_DESCR, ("Paid %d from inventory and %d gold from bank account. Your account balance is now %d gold."):format(moneyCount, amount - moneyCount, self:getBankBalance()))
+        end
+    end
+    return true
+end
+ 
+local function getPlayerMoney(cid)
+    local player = Player(cid)
+    if player then
+        return player:getMoney() + player:getBankBalance()
+    end
+    return 0
+end
+ 
+local function doPlayerRemoveMoney(cid, amount)
+    local player = Player(cid)
+    if player then
+        return player:removeMoneyNpc(amount)
+    end
+    return false
+end
+
 -- Advanced NPC System by Jiddo
 
 if Modules == nil then
@@ -80,7 +115,7 @@ if Modules == nil then
 				npcHandler:say("You are already promoted!", cid)
 			elseif player:getLevel() < parameters.level then
 				npcHandler:say("I am sorry, but I can only promote you once you have reached level " .. parameters.level .. ".", cid)
-			elseif not player:removeMoney(parameters.cost) then
+			elseif not player:removeMoneyNpc(parameters.cost) then
 				npcHandler:say("You do not have enough money!", cid)
 			else
 				npcHandler:say(parameters.text, cid)
@@ -110,7 +145,7 @@ if Modules == nil then
 				npcHandler:say("You already know this spell.", cid)
 			elseif not player:canLearnSpell(parameters.spellName) then
 				npcHandler:say("You cannot learn this spell.", cid)
-			elseif not player:removeMoney(parameters.price) then
+			elseif not player:removeMoneyNpc(parameters.price) then
 				npcHandler:say("You do not have enough money, this spell costs " .. parameters.price .. " gold.", cid)
 			else
 				npcHandler:say("You have learned " .. parameters.spellName .. ".", cid)
@@ -137,7 +172,7 @@ if Modules == nil then
 		if player:isPremium() or not parameters.premium then
 			if player:hasBlessing(parameters.bless) then
 				npcHandler:say("Gods have already blessed you with this blessing!", cid)
-			elseif not player:removeMoney(parameters.cost) then
+			elseif not player:removeMoneyNpc(parameters.cost) then
 				npcHandler:say("You don't have enough money for blessing.", cid)
 			else
 				player:addBlessing(parameters.bless)
@@ -166,7 +201,7 @@ if Modules == nil then
 				npcHandler:say("First get rid of those blood stains! You are not going to ruin my vehicle!", cid)
 			elseif parameters.level and player:getLevel() < parameters.level then
 				npcHandler:say("You must reach level " .. parameters.level .. " before I can let you go there.", cid)
-			elseif not player:removeMoney(parameters.cost) then
+			elseif not player:removeMoneyNpc(parameters.cost) then
 				npcHandler:say("You don't have enough money.", cid)
 			else
 				npcHandler:say(parameters.msg or "Set the sails!", cid)
@@ -442,7 +477,7 @@ if Modules == nil then
 
 		local player = Player(cid)
 		if player:isPremium() or not shop_premium[cid] then
-			if not player:removeMoney(cost) then
+			if not player:removeMoneyNpc(cost) then
 				npcHandler:say("You do not have enough money!", cid)
 			elseif player:isPzLocked(cid) then
 				npcHandler:say("Get out of there with this blood.", cid)
@@ -489,7 +524,7 @@ if Modules == nil then
 
 		local player = Player(cid)
 		if player:isPremium() or not parameters.premium then
-			if player:removeMoney(cost) then
+			if player:removeMoneyNpc(cost) then
 				local position = player:getPosition()
 				player:teleportTo(destination)
 

@@ -1,13 +1,31 @@
 local deathListEnabled = true
 local maxDeathRecords = 5
 
+local function addAssistsPoints(attackerId, target)
+	if not attackerId or type(attackerId) ~= 'number' then
+		return
+	end
+
+	if not target or type(target) ~= 'userdata' or not target:isPlayer() then
+		return
+	end
+
+	local ignoreIds = {attackerId, target:getId()}
+	for id in pairs(target:getDamageMap()) do
+		local tmpPlayer = Player(id)
+		if tmpPlayer and not isInArray(ignoreIds, id) then
+			tmpPlayer:setStorageValue(STORAGEVALUE_ASSISTS, math.max(0, tmpPlayer:getStorageValue(STORAGEVALUE_ASSISTS)) + 1)
+		end
+	end
+end
+
 function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDamageUnjustified)
 	local playerId = player:getId()
 	if nextUseStaminaTime[playerId] then
 		nextUseStaminaTime[playerId] = nil
 	end
 
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are dead.")
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "YOU DIED")
 	if not deathListEnabled then
 		return
 	end
@@ -67,6 +85,10 @@ function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDama
 	end
 
 	if byPlayer == 1 then
+		addAssistsPoints(killer:getId(), player)
+		player:setStorageValue(STORAGEVALUE_DEATHS, math.max(0, player:getStorageValue(STORAGEVALUE_DEATHS)) + 1)
+		killer:setStorageValue(STORAGEVALUE_KILLS, math.max(0, killer:getStorageValue(STORAGEVALUE_KILLS)) + 1)
+
 		local targetGuild = player:getGuild()
 		targetGuild = targetGuild and targetGuild:getId() or 0
 		if targetGuild ~= 0 then

@@ -540,7 +540,7 @@ class Game
 
 		std::map<uint32_t, BedItem*> bedSleepersMap;
 
-		ModalWindow offlineTrainingWindow { std::numeric_limits<uint32_t>::max(), "Choose a Skill", "Please choose a skill:" };
+		ModalWindow offlineTrainingWindow { std::numeric_limits<uint32_t>::max(), "Going to sleep", "Are you sure?" };
 
 		static constexpr int32_t LIGHT_LEVEL_DAY = 250;
 		static constexpr int32_t LIGHT_LEVEL_NIGHT = 40;

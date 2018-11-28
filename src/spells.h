@@ -177,6 +177,10 @@ class Spell : public BaseSpell
 		uint32_t secondaryGroupCooldown = 0;
 		uint32_t level = 0;
 		uint32_t magLevel = 0;
+		uint32_t intLevel = 0;
+		uint32_t faithLevel = 0;
+		uint32_t strenghtLevel = 0;
+		uint32_t enduranceLevel = 0;
 		int32_t range = -1;
 
 		uint8_t spellId = 0;

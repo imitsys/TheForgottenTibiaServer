@@ -721,20 +721,20 @@ bool IOLoginData::savePlayer(Player* player)
 	query << "`offlinetraining_skill` = " << player->getOfflineTrainingSkill() << ',';
 	query << "`stamina` = " << player->getStaminaMinutes() << ',';
 
-	query << "`skill_fist` = " << player->skills[SKILL_FIST].level << ',';
-	query << "`skill_fist_tries` = " << player->skills[SKILL_FIST].tries << ',';
-	query << "`skill_club` = " << player->skills[SKILL_CLUB].level << ',';
-	query << "`skill_club_tries` = " << player->skills[SKILL_CLUB].tries << ',';
-	query << "`skill_sword` = " << player->skills[SKILL_SWORD].level << ',';
-	query << "`skill_sword_tries` = " << player->skills[SKILL_SWORD].tries << ',';
-	query << "`skill_axe` = " << player->skills[SKILL_AXE].level << ',';
-	query << "`skill_axe_tries` = " << player->skills[SKILL_AXE].tries << ',';
-	query << "`skill_dist` = " << player->skills[SKILL_DISTANCE].level << ',';
-	query << "`skill_dist_tries` = " << player->skills[SKILL_DISTANCE].tries << ',';
-	query << "`skill_shielding` = " << player->skills[SKILL_SHIELD].level << ',';
-	query << "`skill_shielding_tries` = " << player->skills[SKILL_SHIELD].tries << ',';
-	query << "`skill_fishing` = " << player->skills[SKILL_FISHING].level << ',';
-	query << "`skill_fishing_tries` = " << player->skills[SKILL_FISHING].tries << ',';
+	query << "`skill_fist` = " << player->skills[SKILL_VITALITY].level << ',';
+	//query << "`skill_fist_tries` = " << player->skills[SKILL_VITALITY].tries << ',';
+	query << "`skill_club` = " << player->skills[SKILL_STRENGHT].level << ',';
+	//query << "`skill_club_tries` = " << player->skills[SKILL_STRENGHT].tries << ',';
+	query << "`skill_sword` = " << player->skills[SKILL_FAITH].level << ',';
+	//query << "`skill_sword_tries` = " << player->skills[SKILL_FAITH].tries << ',';
+	query << "`skill_axe` = " << player->skills[SKILL_INTELLIGENCE].level << ',';
+	//query << "`skill_axe_tries` = " << player->skills[SKILL_INTELLIGENCE].tries << ',';
+	query << "`skill_dist` = " << player->skills[SKILL_DEXTERITY].level << ',';
+	//query << "`skill_dist_tries` = " << player->skills[SKILL_DEXTERITY].tries << ',';
+	query << "`skill_shielding` = " << player->skills[SKILL_RESISTANCE].level << ',';
+	//query << "`skill_shielding_tries` = " << player->skills[SKILL_RESISTANCE].tries << ',';
+	query << "`skill_fishing` = " << player->skills[SKILL_ENDURANCE].level << ',';
+	//query << "`skill_fishing_tries` = " << player->skills[SKILL_ENDURANCE].tries << ',';
 
 	if (!player->isOffline()) {
 		query << "`onlinetime` = `onlinetime` + " << (time(nullptr) - player->lastLoginSaved) << ',';

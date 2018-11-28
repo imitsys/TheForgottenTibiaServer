@@ -176,3 +176,7 @@ pip-log.txt
 ## TFS / OT
 #############
 config.lua
+etc/
+vc14/.vs/
+data/world/
+TheForgottenTibiaServerRestarter.bat

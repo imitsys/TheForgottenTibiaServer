@@ -404,7 +404,7 @@ class LuaScriptInterface
 
 		void registerFunctions();
 
-		void registerMethod(const std::string& globalName, const std::string& methodName, lua_CFunction func);
+		void registerMethod(const std::string& className, const std::string& methodName, lua_CFunction func);
 
 		static std::string getErrorDesc(ErrorCode_t code);
 
@@ -983,6 +983,10 @@ class LuaScriptInterface
 		static int luaPlayerHasChaseMode(lua_State* L);
 		static int luaPlayerHasSecureMode(lua_State* L);
 		static int luaPlayerGetFightMode(lua_State* L);
+		static int luaPlayertoggleAutoLootGold(lua_State* L); //NEW! AUTO LOOT GOLD
+		static int luaPlayertoggleAutoLootAddon(lua_State* L); //NEW! AUTO LOOT ADDON
+		static int luaPlayersetTitleDescription(lua_State* L); //NEW! TITLE
+
 
 		// Monster
 		static int luaMonsterCreate(lua_State* L);

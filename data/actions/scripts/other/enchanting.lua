@@ -82,10 +82,10 @@ local items = {
 		[24718] = { -- werewolf helmet
 			[COMBAT_NONE] = {
 				id = {
-					[SKILL_CLUB] = {id = 24783},
-					[SKILL_SWORD] = {id = 24783},
-					[SKILL_AXE] = {id = 24783},
-					[SKILL_DISTANCE] = {id = 24783},
+					[SKILL_STRENGHT] = {id = 24783},
+					[SKILL_FAITH] = {id = 24783},
+					[SKILL_INTELLIGENCE] = {id = 24783},
+					[SKILL_DEXTERITY] = {id = 24783},
 					[SKILL_MAGLEVEL] = {id = 24783}
 				},
 				effects = {failure = CONST_ME_POFF, success = CONST_ME_THUNDER},

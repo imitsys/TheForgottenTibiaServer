@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Dragon" nameDescription="a dragon" race="blood" experience="700" speed="185">
+<monster name="Dragon" nameDescription="a dragon" race="blood" experience="700" speed="230">
 	<health now="1000" max="1000" />
 	<look type="34" corpse="5973" />
 	<targetchange interval="4000" chance="10" />
@@ -50,7 +50,7 @@
 		<item name="gold coin" countmax="70" chance="47500" />
 		<item name="gold coin" countmax="45" chance="37500" />
 		<item name="life crystal" chance="120" />
-		<item name="wand of inferno" chance="1005" />
+		<item id="2187" chance="1005" /> <!-- name="wand of inferno" -->
 		<item name="double axe" chance="960" />
 		<item name="longsword" chance="4000" />
 		<item name="serpent sword" chance="420" />

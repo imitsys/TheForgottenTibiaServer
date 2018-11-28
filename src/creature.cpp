@@ -448,6 +448,7 @@ void Creature::onAttackedCreatureChangeZone(ZoneType_t zone)
 	}
 }
 
+//CHANGED! CREATURE FOLLOW ATK WALK SPEED BUG FIX
 void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
                               const Tile* oldTile, const Position& oldPos, bool teleport)
 {
@@ -584,7 +585,9 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 
 	if (creature == followCreature || (creature == this && followCreature)) {
 		if (hasFollowPath) {
-			isUpdatingPath = true;
+			//isUpdatingPath = true; //CHANGED! CREATURE FOLLOW ATK WALK SPEED BUG FIX
+			isUpdatingPath = false;
+			g_dispatcher.addTask(createTask(std::bind(&Game::updateCreatureWalk, &g_game, getID())));
 		}
 
 		if (newPos.z != oldPos.z || !canSee(followCreature->getPosition())) {

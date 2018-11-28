@@ -57,11 +57,11 @@ extern Weapons* g_weapons;
 
 Game::Game()
 {
-	offlineTrainingWindow.choices.emplace_back("Sword Fighting and Shielding", SKILL_SWORD);
-	offlineTrainingWindow.choices.emplace_back("Axe Fighting and Shielding", SKILL_AXE);
-	offlineTrainingWindow.choices.emplace_back("Club Fighting and Shielding", SKILL_CLUB);
-	offlineTrainingWindow.choices.emplace_back("Distance Fighting and Shielding", SKILL_DISTANCE);
-	offlineTrainingWindow.choices.emplace_back("Magic Level and Shielding", SKILL_MAGLEVEL);
+	//offlineTrainingWindow.choices.emplace_back("Sword Fighting and Shielding", SKILL_FAITH);
+	//offlineTrainingWindow.choices.emplace_back("Axe Fighting and Shielding", SKILL_INTELLIGENCE);
+	//offlineTrainingWindow.choices.emplace_back("Club Fighting and Shielding", SKILL_STRENGHT);
+	//offlineTrainingWindow.choices.emplace_back("Distance Fighting and Shielding", SKILL_DEXTERITY);
+	//offlineTrainingWindow.choices.emplace_back("Magic Level and Shielding", SKILL_MAGLEVEL);
 	offlineTrainingWindow.buttons.emplace_back("Okay", 1);
 	offlineTrainingWindow.buttons.emplace_back("Cancel", 0);
 	offlineTrainingWindow.defaultEnterButton = 1;
@@ -1334,13 +1334,13 @@ ReturnValue Game::internalRemoveItem(Item* item, int32_t count /*= -1*/, bool te
 		cylinder->removeThing(item, count);
 
 		if (item->isRemoved()) {
-			item->onRemoved();
 			ReleaseItem(item);
 		}
 
 		cylinder->postRemoveNotification(item, nullptr, index);
 	}
 
+	item->onRemoved();
 	return RETURNVALUE_NOERROR;
 }
 
@@ -3954,28 +3954,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			return true;
 		}
 
-		if (attackerPlayer) {
-			uint16_t chance = attackerPlayer->getSpecialSkill(SPECIALSKILL_HITPOINTSLEECHCHANCE);
-			if (chance != 0 && uniform_random(1, 100) <= chance) {
-				CombatDamage lifeLeech;
-				lifeLeech.primary.value = std::round(healthChange * (attackerPlayer->getSpecialSkill(SPECIALSKILL_HITPOINTSLEECHAMOUNT) / 100.));
-				g_game.combatChangeHealth(nullptr, attackerPlayer, lifeLeech);
-			}
-
-			chance = attackerPlayer->getSpecialSkill(SPECIALSKILL_MANAPOINTSLEECHCHANCE);
-			if (chance != 0 && uniform_random(1, 100) <= chance) {
-				CombatDamage manaLeech;
-				manaLeech.primary.value = std::round(healthChange * (attackerPlayer->getSpecialSkill(SPECIALSKILL_MANAPOINTSLEECHAMOUNT) / 100.));
-				g_game.combatChangeMana(nullptr, attackerPlayer, manaLeech);
-			}
-
-			chance = attackerPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
-			if (chance != 0 && uniform_random(1, 100) <= chance) {
-				healthChange += std::round(healthChange * (attackerPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT) / 100.));
-				g_game.addMagicEffect(target->getPosition(), CONST_ME_CRITICAL_DAMAGE);
-			}
-		}
-
 		TextMessage message;
 		message.position = targetPos;
 
@@ -4040,7 +4018,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 							if (attacker) {
 								ss << " due to ";
 								if (attacker == target) {
-									ss << (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her own attack" : "his own attack");
+									ss << (targetPlayer ? (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her own attack" : "his own attack") : "its own attack");
 								} else {
 									ss << "an attack by " << attacker->getNameDescription();
 								}
@@ -4308,7 +4286,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 					if (attacker) {
 						ss << " due to ";
 						if (attacker == target) {
-							ss << (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her own attack" : "his own attack");
+							ss << (targetPlayer ? (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her own attack" : "his own attack") : "its own attack");
 						} else {
 							ss << "an attack by " << attacker->getNameDescription();
 						}
@@ -5515,15 +5493,11 @@ void Game::playerAnswerModalWindow(uint32_t playerId, uint32_t modalWindowId, ui
 	// offline training, hardcoded
 	if (modalWindowId == std::numeric_limits<uint32_t>::max()) {
 		if (button == 1) {
-			if (choice == SKILL_SWORD || choice == SKILL_AXE || choice == SKILL_CLUB || choice == SKILL_DISTANCE || choice == SKILL_MAGLEVEL) {
-				BedItem* bedItem = player->getBedItem();
-				if (bedItem && bedItem->sleep(player)) {
-					player->setOfflineTrainingSkill(choice);
-					return;
-				}
+			BedItem* bedItem = player->getBedItem();
+			if (bedItem && bedItem->sleep(player)) {
+				//player->setOfflineTrainingSkill(choice);
+				return;
 			}
-		} else {
-			player->sendTextMessage(MESSAGE_EVENT_ADVANCE, "Offline training aborted.");
 		}
 
 		player->setBedItem(nullptr);

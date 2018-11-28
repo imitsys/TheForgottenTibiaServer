@@ -7,24 +7,143 @@ function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) 
 function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
 function onThink()                          npcHandler:onThink()                        end
 
-local node1 = keywordHandler:addKeyword({'first bless'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the first blessing for 10000 gold?'})
-	node1:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 1, premium = true, cost = 10000})
-	node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+local function greetCallback(cid) return true end
 
-local node2 = keywordHandler:addKeyword({'second bless'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the second blessing for 10000 gold?'})
-	node2:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 2, premium = true, cost = 10000})
-	node2:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+local function creatureSayCallback(cid, type, msg)
 
-local node3 = keywordHandler:addKeyword({'third bless'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the third blessing for 10000 gold?'})
-	node3:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 3, premium = true, cost = 10000})
-	node3:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+	if not npcHandler:isFocused(cid) then
+		return false
+	end
 
-local node4 = keywordHandler:addKeyword({'fourth bless'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the fourth blessing for 10000 gold?'})
-	node4:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 4, premium = true, cost = 10000})
-	node4:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+	local player = Player(cid)
 
-local node5 = keywordHandler:addKeyword({'fifth bless'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the fifth blessing for 10000 gold?'})
-	node5:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 5, premium = true, cost = 10000})
-	node5:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+	price = 200
 
+	if player:getLevel() >= 20 then
+		price = player:getLevel() * 10
+	elseif player:getLevel() >= 50 then
+		price = player:getLevel() * 20
+		if price > 5000 then
+			price = 5000
+		end
+	end
+
+	if msgcontains(msg, "bless") then
+		if not player:hasBlessing(1) then
+			npcHandler:say("Do you want to buy the {first bless} for " .. price .. " gold coins?", cid)
+			npcHandler.topic[cid] = 1
+		elseif not player:hasBlessing(2) then
+			npcHandler:say("Do you want to buy the {second bless} for " .. price .. " gold coins?", cid)
+			npcHandler.topic[cid] = 2
+		elseif not player:hasBlessing(3) then
+			npcHandler:say("Do you want to buy the {third bless} for " .. price .. " gold coins?", cid)
+			npcHandler.topic[cid] = 3
+		elseif not player:hasBlessing(4) then
+			npcHandler:say("Do you want to buy the {fourth bless} for " .. price .. " gold coins?", cid)
+			npcHandler.topic[cid] = 4
+		elseif not player:hasBlessing(5) then
+			npcHandler:say("Do you want to buy the {fifth bless} for " .. price .. " gold coins?", cid)
+			npcHandler.topic[cid] = 5
+		end
+
+	elseif (msgcontains(msg, "yes") or msgcontains(msg, "first")) and npcHandler.topic[cid] == 1 then
+		if player:getMoney() >= price then
+			if not player:hasBlessing(1) then
+				player:addBlessing(1)
+				player:removeMoney(price)
+				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+				npcHandler:say("Here you are, the first one! Do you want the next {bless}?", cid)
+				npcHandler.topic[cid] = 2
+			else
+				npcHandler:say("You already got this one!", cid)
+				npcHandler.topic[cid] = 0
+			end
+		else
+			npcHandler:say("I'm sorry but you will need more money.", cid)
+			npcHandler.topic[cid] = 0
+		end
+
+	elseif (msgcontains(msg, "yes") or msgcontains(msg, "second")) and npcHandler.topic[cid] == 2 then
+		if player:getMoney() >= price then
+			if not player:hasBlessing(2) then
+				player:addBlessing(2)
+				player:removeMoney(price)
+				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+				npcHandler:say("Here you are, the second one! Do you want the next {bless}?", cid)
+				npcHandler.topic[cid] = 3
+			else
+				npcHandler:say("You already got this one!", cid)
+				npcHandler.topic[cid] = 0
+			end
+		else
+			npcHandler:say("I'm sorry but you will need more money.", cid)
+			npcHandler.topic[cid] = 0
+		end
+
+	elseif (msgcontains(msg, "yes") or msgcontains(msg, "third")) and npcHandler.topic[cid] == 3 then
+		if player:getMoney() >= price then
+			if not player:hasBlessing(3) then
+				player:addBlessing(3)
+				player:removeMoney(price)
+				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+				npcHandler:say("Here you are, the third one! Do you want the next {bless}?", cid)
+				npcHandler.topic[cid] = 4
+			else
+				npcHandler:say("You already got this one!", cid)
+				npcHandler.topic[cid] = 0
+			end
+		else
+			npcHandler:say("I'm sorry but you will need more money.", cid)
+			npcHandler.topic[cid] = 0
+		end
+
+	elseif (msgcontains(msg, "yes") or msgcontains(msg, "fourth")) and npcHandler.topic[cid] == 4 then
+		if player:getMoney() >= price then
+			if not player:hasBlessing(4) then
+				player:addBlessing(4)
+				player:removeMoney(price)
+				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+				npcHandler:say("Here you are, the fourth one! Do you want the next {bless}?", cid)
+				npcHandler.topic[cid] = 5
+			else
+				npcHandler:say("You already got this one!", cid)
+				npcHandler.topic[cid] = 0
+			end
+		else
+			npcHandler:say("I'm sorry but you will need more money.", cid)
+			npcHandler.topic[cid] = 0
+		end
+
+	elseif (msgcontains(msg, "yes") or msgcontains(msg, "fifth")) and npcHandler.topic[cid] == 5 then
+		if player:getMoney() >= price then
+			if not player:hasBlessing(5) then
+				player:addBlessing(5)
+				player:removeMoney(price)
+				player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+				npcHandler:say("Here you are, the last one! May God be with you.", cid)
+			else
+				npcHandler:say("You already got this one!", cid)
+				npcHandler.topic[cid] = 0
+			end
+		else
+			npcHandler:say("I'm sorry but you will need more money.", cid)
+		end
+		npcHandler.topic[cid] = 0
+
+	elseif msgcontains(msg, "no") then
+		npcHandler:say("Maybe later!", cid)
+		npcHandler.topic[cid] = 0
+		npcHandler:releaseFocus(cid)
+	end
+	return true
+end
+
+local function onAddFocus(cid) end
+local function onReleaseFocus(cid) end
+
+npcHandler:setCallback(CALLBACK_ONADDFOCUS, onAddFocus)
+npcHandler:setCallback(CALLBACK_ONRELEASEFOCUS, onReleaseFocus)
+
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())
